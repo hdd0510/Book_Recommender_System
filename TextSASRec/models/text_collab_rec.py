@@ -21,7 +21,7 @@ class two_layer_mlp(nn.Module):
         x1 = self.fc2(x)
         return x, x1
 
-class TextColabRec(nn.Module):
+class TextCollabRec(nn.Module):
     def __init__(self, args):
         super().__init__()
         rec_pre_trained_data = args.rec_pre_trained_data
@@ -246,7 +246,7 @@ class TextColabRec(nn.Module):
         final_feat = log_feats[:, -1, :]  # [batch_size, embedding_dim]
 
         # Lấy embedding của các sản phẩm
-        if model_stage=='stage1':
+        if model_stage=='text_collab_rec':
             _, item_embs = self.get_item_emb(item_indices.to('cpu'))
         elif model_stage=='pretrain' or 'sasrec':
             item_embs = self.recsys.model.item_emb(torch.LongTensor(item_indices).to(device))

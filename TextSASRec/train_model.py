@@ -12,7 +12,7 @@ from torch.utils.data.distributed import DistributedSampler
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.distributed import init_process_group, destroy_process_group
 
-from models.TextColabRec import *
+from models.TextCollabRec import *
 from pre_train.sasrec.utils import data_partition, SeqDataset, SeqDataset_Inference
 
 
@@ -51,7 +51,7 @@ def train_model_phase1_(rank, world_size, args):
         setup_ddp(rank, world_size)
         args.device = 'cuda:' + str(rank)
         
-    model = TextColabRec(args).to(args.device)
+    model = TextCollabRec(args).to(args.device)
     
     # preprocess data
     dataset = data_partition(args.rec_pre_trained_data, path=f'./data/amazon/{args.rec_pre_trained_data}.txt')
@@ -108,7 +108,7 @@ def train_model_phase2_(rank,world_size,args):
         args.device = 'cuda:'+str(rank)
     random.seed(0)
 
-    model = TextColabRec(args).to(args.device)
+    model = TextCollabRec(args).to(args.device)
     phase1_epoch = 3
     model.load_model(args, phase1_epoch=phase1_epoch)
 
@@ -158,7 +158,7 @@ def inference_(rank, world_size, args):
         setup_ddp(rank, world_size)
         args.device = 'cuda:' + str(rank)
         
-    model = TextColabRec(args).to(args.device)
+    model = TextCollabRec(args).to(args.device)
     phase1_epoch = 3
     phase2_epoch = 5
     model.load_model(args, phase1_epoch=phase1_epoch, phase2_epoch=phase2_epoch)
